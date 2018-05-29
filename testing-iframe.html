@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+	p {
+		background-color:blue;
+		color: white;
+	}
+	</style>
+</head>
+<body>
+	<p>This is outside iframe</p>
+	<iframe id="mySpecialIframe" width="100%" frameborder="none" style="margin: 0px !important; min-height: 5px;" ></iframe>
+	<script type="text/javascript">
+		function writeInMyIFrame() {
+			var htmlString = "" + 
+						 "<style>" +
+						 "p {" +
+						 "	background-color: red;" +
+						 "	color: blue;" +
+						 "}" +
+						 "body {" +
+						 "	margin: 0px !important;" +
+						 "	padding: 0px !important" +
+						 "	min-height:5px;" +
+						 "	overflow: hidden !important" +
+						 "}" +
+						 "</style>" +
+						 "<p>This is inside iframe</p>" +
+						 /*
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 "<p>This is inside iframe</p>" +
+						 */
+						 "<p>This is inside iframe</p>" ;
+			var myIframe = document.getElementById("mySpecialIframe").contentWindow;
+			myIframe.document.open();
+			myIframe.document.write(htmlString);
+			myIframe.document.close();
+		}
+		window.addEventListener('DOMContentLoaded', function doStuff(e) {
+			var myIframe = document.getElementById("mySpecialIframe");
+			myIframe.addEventListener("load", function(e) {
+				myIframe.height = myIframe.contentWindow.document.body.scrollHeight;
+				alert(myIframe.height);
+			});
+			document.close();
+		})
+		window.onload = writeInMyIFrame;
+	</script>
+	<p>This is outside iframe again</p>
+</html>
