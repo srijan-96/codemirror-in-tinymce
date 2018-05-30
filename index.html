@@ -2,8 +2,41 @@
 <html>
 	<head>
 		<title>TinyMCE Stuff. </title>
+		<meta charset="utf-8"></meta>
+		<link href='https://fonts.googleapis.com/css?family=Allerta' rel='stylesheet'>
+		<style>
+			* {
+				font-family: 'Allerta';
+			}
+			h2 {
+				background-color: #3F51B5;
+				padding-left: 45px;
+				color: white;
+			}
+		</style>
 	</head>
 	<body>
+		<h2>
+			What's working
+		</h2>
+		<ul>
+			<li>Indents the code for html elements</li>
+			<li>Allows CSS theming</li>
+			<li>Saves CSS theming</li>
+			<li>Allows body, html and head tag</li>
+		</ul>
+		<h2>
+			What's not working
+		</h2>
+		<ul>
+			<li>CSS indentation is messed up</li>
+			<li>JavaScript(Didn't check yet)</li>
+			<li>Not sure if enabling fullpage plugin is good idea for edx</li>
+		</ul>
+		<h2>
+			Possible solution 
+		</h2>
+		<p>fullpage plugin will add <code>html, head & body</code> tags to tinymce output regardless of use of style or script tag, which could be harmful if not wrapped inside iframe. One possible approach could be stripping down these tags before writing the file and you will be fine.</p>
 		<textarea class="tinymce"></textarea>
 
 		<!-- Javascript -->
