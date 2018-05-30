@@ -363,7 +363,35 @@ function style_html(e, t, n, r, i) {
         o.found_leading_whitespace = false;
         o.found_trailing_whitespace = false
     } while (o.token_type !== "TK_EOF");
-    return o.output.join("")
+    var ret = o.output.join("");
+    var start = ret.indexOf("<style>"),
+        end = ret.indexOf("</style>");
+    if(start >= end) {
+        // either the html is fucked or there is no style tag, return as it is
+	return ret;
+	// evil laugh if the html is fucked
+    }
+    var ret1 = ret.substring(0, start + 7),
+        ret2 = ret.substring(start + 8, end - 1),
+	ret3 = ret.substring(end -1, ret.length);
+
+    //alert("ret1 = " + ret1 + "\nret2 = " + ret2 + "\nret3 = " + ret3 + "\n");
+    var indentedcss = []
+    for(var index = 0; index < ret2.length; index++) {
+        indentedcss.push(ret2.charAt(index));
+	if(ret2.charAt(index) == '{') {
+	    indentedcss.push('\n');
+	}
+	if(ret2.charAt(index) == '}') {
+	    indentedcss.push('\n');
+	}
+	if(ret2.charAt(index) == ';') {
+	    indentedcss.push('\n');
+	}
+    }
+    ret2 = indentedcss.join('');
+    ret = ret1 + '\n' + ret2 + ret3;
+    return ret;
 }
 /*
 CodeMirror.defineMode("htmlmixed", function(e, t) {
