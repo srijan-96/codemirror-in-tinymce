@@ -41,7 +41,7 @@
 	</head>
 	<body>
 		{% if all_editors %}
-			<h1>This is the list of every editor available to you :</h1>
+			<h1>This is the list of every editor available </h1>
 			<ul>
 				{% for editor in all_editors %}
 				<li> {{ editor.name }} <a href="/editor/{{ editor.id }}">⇒</a></li>
