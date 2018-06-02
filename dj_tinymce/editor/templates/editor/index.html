@@ -40,11 +40,15 @@
 		</style>
 	</head>
 	<body>
-		<h1>This is the list of every editor available to you :</h1>
-		<ul>
-			{% for editor in all_editors %}
-			<li> {{ editor.name }} <a href="/editor/{{ editor.id }}">⇒</a></li>
-			{% endfor %}
-		</ul>
+		{% if all_editors %}
+			<h1>This is the list of every editor available to you :</h1>
+			<ul>
+				{% for editor in all_editors %}
+				<li> {{ editor.name }} <a href="/editor/{{ editor.id }}">⇒</a></li>
+				{% endfor %}
+			</ul>
+		{% else %}
+			<h1>No editors are available</h1>
+		{% endif %}
 	</body>
 </html>
