@@ -9,4 +9,7 @@ urlpatterns = [
     # editor/808244750988245/
     path(r'<int:editor_id>/', views.nth_editor, name='edito_nth'),
 
+    # editor/808244750988245/ajax/submit_html
+    path(r'<int:editor_id>/ajax/submit_html/', views.save_nth_editor, name='edito_nth_save'),
+
 ]

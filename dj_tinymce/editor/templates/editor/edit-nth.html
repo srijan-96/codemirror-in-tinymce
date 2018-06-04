@@ -2,13 +2,15 @@
 {% load static %}
 <html>
 	<head>
-        {% if editor_name %}
-            <title>Editor - {{editor_name}} </title>
+        {% if editor %}
+            <title>Editor - {{editor.name}} </title>
         {% else %}
             <title>Unknown Editor</title>
-        {% endif %}
+		{% endif %}
+		<!--
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
 		<link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Tangerine">
+		-->
 		<style>
 		* {
 			font-family: 'Roboto', serif;
@@ -16,6 +18,7 @@
 		body, html {
 			padding: 0px !important;
 			margin: 0px !important;
+			overflow-x: hidden !important;
 		}
 		h1 {
 			background-color:#4285f4;
@@ -23,7 +26,17 @@
 			margin-top: 0px;
 			padding-left: 40px;
 			padding-top: 10px;
+			padding-bottom: 0px;
+			margin-bottom: 0px;
+		}
+		h3 {
+			background-color:#4285f4;
+			color: white;
+			margin-top: 0px;
+			padding-left: 40px;
 			padding-bottom: 10px;
+			padding-top : 0px;
+			margin-top : 0px;
 		}
 		ul {
 			font-size: 23px;
@@ -42,19 +55,119 @@
 			color: blue;
 			font-size: 50px;
 		}
+		.tinymce {
+			padding: 20px 20px 20px 20px;
+			height : 250px;
+			width: 100%;
+		}
+		/**
+		* Sexy CSS buttons
+		* https://gist.github.com/dziudek/2621644
+		*/
+
+		/* additional styles */
+		hr {
+			border: none;
+			border-bottom: 2px solid #fafafa;
+			border-top: 1px solid #dadada;
+			margin: 20px 0;
+		}
+
+		/* First style */
+		.btn1 {
+			background: rgb(255, 255, 255);
+			border: 1px solid rgb(174, 174, 174);
+			border-radius: 4px;
+			box-shadow: inset 0 0 7px rgb(236, 236, 236), 0 1px 1px rgb(232, 232, 232);
+			color: rgb(109, 111, 118); 
+			cursor: pointer;
+			font-size: 20px;
+			height: 48px;
+			width: 72px;
+			line-height: 23px;
+			padding: 0 8px;
+			transition: color 0.3s ease-out, border-color 0.3s ease-out, box-shadow 0.3s ease-out;
+		}
+
+		.btn1.hover,
+		.btn1:hover {
+			color: rgb(72, 156, 206);
+			border-color: rgb(92, 176, 226);
+			box-shadow: inset 0 0 7px rgb(224, 239, 249), 0 1px 1px rgb(163, 205, 229);
+		}
+
+		.btn1.inactive {
+			opacity: 0.7;
+		}
+		/* Second style */
+
+		.btn2 {
+			background: rgb(255, 255, 255);
+			border: 1px solid rgb(174, 174, 174);
+			border-radius: 4px;
+			box-shadow: inset 0 0 7px rgb(236, 236, 236), 0 1px 1px rgb(232, 232, 232);
+			color: rgb(109, 111, 118); 
+			cursor: pointer;
+			font-size: 20px;
+			height: 48px;
+			width: 72px;
+			line-height: 23px;
+			padding: 0 8px;
+			transition: color 0.3s ease-out, border-color 0.3s ease-out, box-shadow 0.3s ease-out;
+		}
+
+		.btn2.hover,
+		.btn2:hover {
+			color: rgb(72, 156, 206);
+			border-color: rgb(92, 176, 226);
+			box-shadow: inset 0 0 7px rgb(224, 239, 249), 0 1px 1px rgb(163, 205, 229);
+		}
+
+		.btn2.inactive {
+			opacity: 0.7;
+		}
 		</style>
 	</head>
 	<body>
-        {% if editor_name %}
-            <h1>Editor - {{editor_name}}</h1>
+        {% if editor %}
+			<h1>Editor - {{editor.name}}</h1>
+			<h3>Editor Id : {{editor.id}}</h3>
         {% else %}
             <h1>Unknown Editor</h1>
         {% endif %}
-		<textarea class="tinymce"></textarea>
-
+		{% block content %}
+			<textarea class="tinymce" id="tinymce-edit"></textarea>
+			<hr>
+			<button class="btn1" id="save">Save</button>
+			<button class="btn2" id="view">View</button>
+		{% endblock %}
 		<!-- Javascript -->
 		<script type="text/javascript" src="{% static "editor/js/jquery.min.js" %}"></script>
 		<script type="text/javascript" src="{% static "editor/plugin/tinymce/tinymce.js" %}"></script>
 		<script type="text/javascript" src="{% static "editor/plugin/tinymce/init-tinymce.js" %}"></script>
+		<script>
+			$(document).ready(function () {
+				tiny_mce_init(String.raw`{{ editor.showHTML }}`);
+				/*
+				 * The tinyMCE word is deliberately divided into tiny_mce
+				 * I've not done some typo
+				 * Thank you very much
+				 */
+			});
+			$('#save').click(function () {
+				var content = tinyMCE.get('tinymce-edit').getContent();
+				$.ajax({
+					type:'POST',
+					url:'/editor/{{editor.id}}/ajax/submit_html/',
+					data: {
+						'htmlContent' : content
+					},
+					dataType: 'json',
+					success: function(data) {
+						alert("Saved");
+					}
+				});
+			});
+		</script>
 	</body>
 </html>
