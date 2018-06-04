@@ -16,6 +16,7 @@ var tinymce,     // Reference to TinyMCE
 	codemirror,  // CodeMirror instance
 	chr = 0,     // Unused utf-8 character, placeholder for cursor
 	isMac = /macintosh|mac os/i.test(navigator.userAgent),
+	html,
 	CMsettings;  // CodeMirror settings
 
 function inArray(key, arr)
@@ -140,7 +141,7 @@ function start()
 	head.appendChild(div);
 
 	// Set CodeMirror cursor and bookmark to same position as cursor was in TinyMCE:
-	var html = editor.getContent({source_view: true});
+	html = editor.getContent({source_view: true});
 
     // [FIX] #6 z-index issue with table panel and source code dialog
     //	editor.selection.getBookmark();
@@ -172,9 +173,8 @@ function start()
 			});
 		}
 	});
-
-	CMsettings.config.value = html;
-
+	var htmlContent = style_html(editor.getContent({format: "html"}, 4));
+	CMsettings.config.value = htmlContent;
 	// Instantiante CodeMirror:
 	codemirror = CodeMirror(document.body, CMsettings.config);
 	codemirror.isDirty = false;
@@ -226,6 +226,7 @@ function submit()
     // [FIX] Cursor position inside JS, style or &nbps;
     // Workaround to fix cursor position if inside script tag
     var code = codemirror.getValue();
+    alert(code);
     if(code.search(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi) !== -1 || code.search(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi) !== -1)
     {
     	editor.setContent(codemirror.getValue().replace(cc, ''));
@@ -250,6 +251,7 @@ function submit()
 }
 
 </script>
+<script type="text/javascript" src="./batched_scripts.js"></script>
 <style type="text/css">
 body {
 	margin: 0;

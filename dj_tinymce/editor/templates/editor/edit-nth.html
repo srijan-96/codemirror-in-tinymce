@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+	<head>
+        {% if editor_name %}
+            <title>Editor - {{editor_name}} </title>
+        {% else %}
+            <title>Unknown Editor</title>
+        {% endif %}
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+		<link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Tangerine">
+		<style>
+		* {
+			font-family: 'Roboto', serif;
+		}
+		body, html {
+			padding: 0px !important;
+			margin: 0px !important;
+		}
+		h1 {
+			background-color:#4285f4;
+			color: white;
+			margin-top: 0px;
+			padding-left: 40px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		ul {
+			font-size: 23px;
+		}
+		a {
+			color: inherit;
+			text-decoration: none;
+			font-size: 25px;
+			transition: all 0.2s ease-in;
+			-o-transition: all 0.2s ease-in;
+			-ms-transition: all 0.2s ease-in;
+			-moz-transition: all 0.2s ease-in;
+			-webkit-transition: all 0.2s ease-in;
+		}
+		a:hover {
+			color: blue;
+			font-size: 50px;
+		}
+		</style>
+	</head>
+	<body>
+        {% if editor_name %}
+            <h1>Editor - {{editor_name}}</h1>
+        {% else %}
+            <h1>Unknown Editor</h1>
+        {% endif %}
+		<textarea class="tinymce"></textarea>
+
+		<!-- Javascript -->
+		<script type="text/javascript" src="{% static "editor/js/jquery.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "editor/plugin/tinymce/tinymce.js" %}"></script>
+		<script type="text/javascript" src="{% static "editor/plugin/tinymce/init-tinymce.js" %}"></script>
+	</body>
+</html>

@@ -9,4 +9,6 @@ def index(request):
     return render(request, 'editor/index.html', context)
 
 def nth_editor(request, editor_id):
-    return HttpResponse("<h2>This is editor " + str(editor_id) + " : </h2>")
+    editor_name = EditorData.objects.get(id=editor_id).name;
+    context = {'editor_name' : editor_name}
+    return render(request, 'editor/edit-nth.html', context)
