@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-{% load static %}
 <html>
-	<head>
-        {% if editor %}
-            <title>Editor - {{editor.name}} </title>
+    <head>
+        {% if editordata %}
+        <title>{{editordata.name}}</title>
         {% else %}
-            <title>Unknown Editor</title>
-		{% endif %}
-		<!-- -->
+        <title>Unknown</title>
+        {% endif %}
+
+        <!-- -->
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
 		<link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Tangerine">
 		<!-- -->
@@ -126,54 +126,60 @@
 		.btn2.inactive {
 			opacity: 0.7;
 		}
+        /* Collapsible Stuff */
+        /* Style the button that is used to open and close the collapsible content */
+        .collapsible {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+        }
+
+        /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+        .active, .collapsible:hover {
+            background-color: #ccc;
+        }
+
+        /* Style the collapsible content. Note: hidden by default */
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: #f1f1f1;
+        }
 		</style>
-	</head>
-	<body>
+    </head>
+    <body>
         {% if editor %}
 			<h1>Editor - {{editor.name}}</h1>
 			<h3>Editor Id : {{editor.id}}</h3>
         {% else %}
             <h1>Unknown Editor</h1>
         {% endif %}
-		{% block content %}
-			<textarea class="tinymce" id="tinymce-edit"></textarea>
-			<hr>
-			<button class="btn1" id="save">Save</button>
-			<button class="btn2" id="view">View</button>
-		{% endblock %}
-		<!-- Javascript -->
-		<script type="text/javascript" src="{% static "editor/js/jquery.min.js" %}"></script>
-		<script type="text/javascript" src="{% static "editor/plugin/tinymce/tinymce.js" %}"></script>
-		<script type="text/javascript" src="{% static "editor/plugin/tinymce/init-tinymce.js" %}"></script>
-		<script>
-			$(document).ready(function () {
-				/*
-				 * Safe  pastes in normal data instead of putting in 
-				 * escaped characters like &lt; instead of <
-				 * (Not sure if these are escape characers, correct me if wrong)
-				 */
-				tiny_mce_init(String.raw`{{ editor.showHTML | safe }}`);
-				/*
-				 * The tinyMCE word is deliberately divided into tiny_mce
-				 * I've not done some typo
-				 * Thank you very much
-				 */
-			});
-			$('#save').click(function () {
-				var content = tinyMCE.get('tinymce-edit').getContent();
-				alert(content);
-				$.ajax({
-					type:'POST',
-					url:'/editor/{{editor.id}}/ajax/submit_html/',
-					data: {
-						'htmlContent' : content
-					},
-					dataType: 'json',
-					success: function(data) {
-						alert("Saved");
-					}
-				});
-			});
-		</script>
-	</body>
+        <button class="collapsible">HTML Contents</button>
+        <div class="content">
+            <p>{{editordata.htmlContent}}</p>
+        </div>
+        <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+            content.style.display = "none";
+            } else {
+            content.style.display = "block";
+            }
+        });
+        }
+        </script>
+    </body>
 </html>

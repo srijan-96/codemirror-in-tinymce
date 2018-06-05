@@ -28,3 +28,8 @@ def save_nth_editor(request, editor_id):
         return JsonResponse(ret)
     else:
         return render(request, 'editor/edit-nth.html', context)
+
+def view_nth_page(request, editor_id):
+    editordata = EditorData.objects.get(id=editor_id)
+    context = {'editordata': editordata}
+    return render(request, 'editor/view-nth.html', context)
