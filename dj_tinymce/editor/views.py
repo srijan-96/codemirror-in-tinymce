@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import EditorData
-from .BasicHtmlParser import convertHTML
 # Create your views here.
 
 def index(request):
