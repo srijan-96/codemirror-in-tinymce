@@ -11,6 +11,7 @@ function tiny_mce_init(htmlContent) {
 		force_br_newlines: true,
 		force_p_newlines: false,
 		forced_root_block: '',
+		entity_encoding: 'raw',
 		plugins: 'codemirror fullpage',
 		external_plugins: {
 			codemirror: "plugins/codemirror/plugin.js",
@@ -27,9 +28,10 @@ function tiny_mce_init(htmlContent) {
 		},
 		setup: function (editor){
 			editor.on('init', function() {
-				editor.setContent(htmlContent, {format: 'raw'});
-			})
+				alert(htmlContent);
+				editor.setContent(htmlContent, {format: 'html'})
+			});
 		}
 	});
-	tinymce.render();
+	tinymce.activeEditor.render();
 }

@@ -147,7 +147,12 @@
 		<script type="text/javascript" src="{% static "editor/plugin/tinymce/init-tinymce.js" %}"></script>
 		<script>
 			$(document).ready(function () {
-				tiny_mce_init(String.raw`{{ editor.showHTML }}`);
+				/*
+				 * Safe  pastes in normal data instead of putting in 
+				 * escaped characters like &lt; instead of <
+				 * (Not sure if these are escape characers, correct me if wrong)
+				 */
+				tiny_mce_init(String.raw`{{ editor.showHTML | safe }}`);
 				/*
 				 * The tinyMCE word is deliberately divided into tiny_mce
 				 * I've not done some typo
@@ -156,6 +161,7 @@
 			});
 			$('#save').click(function () {
 				var content = tinyMCE.get('tinymce-edit').getContent();
+				alert(content);
 				$.ajax({
 					type:'POST',
 					url:'/editor/{{editor.id}}/ajax/submit_html/',

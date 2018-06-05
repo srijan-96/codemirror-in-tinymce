@@ -21,7 +21,7 @@ def save_nth_editor(request, editor_id):
         htmlContent = request.POST.get('htmlContent', None)
         editor = EditorData.objects.get(id=editor_id)
         editor.htmlContent = htmlContent
-        editor.showHTML = convertHTML(htmlContent)
+        editor.showHTML = htmlContent
         editor.save()
         ret = {
             'saved': 'True'
