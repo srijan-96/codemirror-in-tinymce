@@ -201,21 +201,23 @@
 		</script>
 		<script type="text/javascript">
 			function writeInMyIFrame() {
-				var htmlString = String.raw`{{editordata.showHTML | safe}}`;
+				var htmlString = String.raw`{{editordata.htmlContent | safe}}`;
 				var myIframe = document.getElementById("mySpecialIframe").contentWindow;
 				var iframeStatus = document.getElementById('iframe_status');
 				myIframe.document.open();
 				myIframe.document.write(htmlString);
 				myIframe.document.close();
-				if(htmlString.indexOf('<iframe>') > -1) {
-					if(htmlString.indexOf('</iframe>') > -1) {
+				htmlString = String.raw`{{editordata.showHTML | safe | escapejs}}`;
+				alert(htmlString);
+				if(htmlString.indexOf('\u003Ciframe') > -1) {
+					if(htmlString.indexOf('\u003C\u002Fiframe\u003E') > -1) {
 						iframeStatus.innerHTML += ' Present';
 					}
 					else {
 						iframeStatus.innerHTML += ' Only opening tag present';
 					}
 				}
-				else if(htmlString.indexOf('</iframe>') > -1) {
+				else if(htmlString.indexOf('\u003C\u002Fiframe\u003E') > -1) {
 					iframeStatus.innerHTML += ' Only closing tag present';
 				}
 				else {

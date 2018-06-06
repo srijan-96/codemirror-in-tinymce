@@ -152,7 +152,7 @@
 				 * escaped characters like &lt; instead of <
 				 * (Not sure if these are escape characers, correct me if wrong)
 				 */
-				tiny_mce_init(String.raw`{{ editor.showHTML | safe }}`);
+				tiny_mce_init(String.raw`{{ editor.htmlContent | safe }}`);
 				/*
 				 * The tinyMCE word is deliberately divided into tiny_mce
 				 * I've not done some typo
