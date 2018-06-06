@@ -203,9 +203,24 @@
 			function writeInMyIFrame() {
 				var htmlString = String.raw`{{editordata.showHTML | safe}}`;
 				var myIframe = document.getElementById("mySpecialIframe").contentWindow;
+				var iframeStatus = document.getElementById('iframe_status');
 				myIframe.document.open();
 				myIframe.document.write(htmlString);
 				myIframe.document.close();
+				if(htmlString.indexOf('<iframe>') > -1) {
+					if(htmlString.indexOf('</iframe>') > -1) {
+						iframeStatus.innerHTML += ' Present';
+					}
+					else {
+						iframeStatus.innerHTML += ' Only opening tag present';
+					}
+				}
+				else if(htmlString.indexOf('</iframe>') > -1) {
+					iframeStatus.innerHTML += ' Only closing tag present';
+				}
+				else {
+					iframeStatus.innerHTML += ' Absent';
+				}
 			}
 			window.addEventListener('DOMContentLoaded', function doStuff(e) {
 				var myIframe = document.getElementById("mySpecialIframe");
