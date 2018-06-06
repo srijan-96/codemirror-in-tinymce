@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import EditorData
+from .htmlChecker import process_for_iframe
 # Create your views here.
 
 def index(request):
@@ -20,7 +21,7 @@ def save_nth_editor(request, editor_id):
         htmlContent = request.POST.get('htmlContent', None)
         editor = EditorData.objects.get(id=editor_id)
         editor.htmlContent = htmlContent
-        editor.showHTML = htmlContent
+        editor.showHTML = process_for_iframe(htmlContent)
         editor.save()
         ret = {
             'saved': 'True'

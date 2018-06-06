@@ -5,4 +5,16 @@
 
 def process_for_iframe(htmlContent):
     ret = htmlContent
+    try:
+        start = ret.index("<head>") + len("<head>")
+        end = ret.index("</head>") + len("</head>")
+        check = ret[start:end]
+    except ValueError:
+        return ret
+    # Remove all whitespaces, newlines and tabs 
+    check = ''.join(check.split())
+    if(check == ''):
+        print("You don't need an iframe")
+    else:
+        print("You need an iframe")
     return ret
