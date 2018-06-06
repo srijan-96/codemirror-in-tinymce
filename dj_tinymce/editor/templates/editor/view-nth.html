@@ -129,8 +129,8 @@
         /* Collapsible Stuff */
         /* Style the button that is used to open and close the collapsible content */
         .collapsible {
-            background-color: #eee;
-            color: #444;
+            background-color: #4285f4;
+            color: white;
             cursor: pointer;
             padding: 18px;
             width: 100%;
@@ -138,11 +138,24 @@
             text-align: left;
             outline: none;
             font-size: 15px;
+			opacity: 1;
         }
+
+		.collapsible:after {
+			content: '\02795'; /* Unicode character for "plus" sign (+) */
+			font-size: 13px;
+			color: white;
+			float: right;
+			margin-left: 5px;
+		}
+
+		.active:after {
+			content: "\2796"; /* Unicode character for "minus" sign (-) */
+		}
 
         /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
         .active, .collapsible:hover {
-            background-color: #ccc;
+            opacity: 0.5
         }
 
         /* Style the collapsible content. Note: hidden by default */
@@ -155,16 +168,21 @@
 		</style>
     </head>
     <body>
-        {% if editor %}
-			<h1>Editor - {{editor.name}}</h1>
-			<h3>Editor Id : {{editor.id}}</h3>
+        {% if editordata %}
+			<h1>Editor - {{editordata.name}}</h1>
+			<h3>Editor Id : {{editordata.id}}</h3>
         {% else %}
             <h1>Unknown Editor</h1>
         {% endif %}
         <button class="collapsible">HTML Contents</button>
         <div class="content">
             <p>{{editordata.htmlContent}}</p>
-        </div>
+		</div>
+		<button class="collapsible">Browser Status</button>
+		<div class="content">
+			<h4 id="iframe_status">IFrame status in content : </h4>
+		</div>
+		<iframe id="mySpecialIframe" class="framed" width="100%" height="0px" frameborder="0" style="margin: 0px !important; min-height: 5px;"></iframe>
         <script>
         var coll = document.getElementsByClassName("collapsible");
         var i;
@@ -180,6 +198,24 @@
             }
         });
         }
-        </script>
+		</script>
+		<script type="text/javascript">
+			function writeInMyIFrame() {
+				var htmlString = String.raw`{{editordata.showHTML | safe}}`;
+				var myIframe = document.getElementById("mySpecialIframe").contentWindow;
+				myIframe.document.open();
+				myIframe.document.write(htmlString);
+				myIframe.document.close();
+			}
+			window.addEventListener('DOMContentLoaded', function doStuff(e) {
+				var myIframe = document.getElementById("mySpecialIframe");
+				myIframe.addEventListener("load", function(e) {
+					myIframe.height = myIframe.contentWindow.document.body.scrollHeight + 35;
+					alert(myIframe.height);
+				});
+				document.close();
+			})
+			window.onload = writeInMyIFrame;
+		</script>	
     </body>
 </html>
