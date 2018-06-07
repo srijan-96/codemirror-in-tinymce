@@ -10,9 +10,9 @@
 </head>
 <body>
 	<p>This is outside iframe</p>
-	<iframe id="mySpecialIframe" width="100%" height="0px" frameborder="0" style="margin: 0px !important; min-height: 5px;"></iframe>
+	<iframe id="mySpecialIframe" width="100%" height="0px" frameborder="0" style="margin: 0px !important; min-height: 5px;" ></iframe>
 
-	
+
 	<script type="text/javascript">
 		function writeInMyIFrame() {
 			var htmlString = "" + 
@@ -32,20 +32,33 @@
 						 "<p>This is inside iframe</p>" +
 						 "<p>This is inside iframe</p>" +
 						 "<p>This is inside iframe</p>" +
+						 "<a href=\"https://www.google.com\">Google</a><br />" +
+						 "<a href=\"https://www.github.com/ashutoshbsathe\">GitHub/ashutoshbsathe</a>" +
 						 "<p>This is inside iframe</p>" ;
 			var myIframe = document.getElementById("mySpecialIframe").contentWindow;
 			myIframe.document.open();
 			myIframe.document.write(htmlString);
 			myIframe.document.close();
 		}
+		function addBlankTargetForAnchorTags(myIframe) {
+			var anchorTags = myIframe.contentDocument.getElementsByTagName("A");
+			console.log("Length = " + anchorTags.length);
+			for(var i = 0; i < anchorTags.length; i++) {
+				aTag = anchorTags[i];
+				console.log(aTag.href);
+				aTag.target = '_blank';
+			}
+
+		}
 		window.addEventListener('DOMContentLoaded', function doStuff(e) {
 			var myIframe = document.getElementById("mySpecialIframe");
 			myIframe.addEventListener("load", function(e) {
 				myIframe.height = myIframe.contentWindow.document.body.scrollHeight;
-				alert(myIframe.height);
+				console.log(myIframe.height);
+				addBlankTargetForAnchorTags(myIframe);
 			});
 			document.close();
-		})
+		});
 		window.onload = writeInMyIFrame;
 	</script>
 	<p>This is outside iframe again</p>
